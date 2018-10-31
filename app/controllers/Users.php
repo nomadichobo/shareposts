@@ -1,7 +1,7 @@
 <?php 
     class Users extends Controller{
         public function __construct() {
-
+            $this->userModel = $this->model('User');
         }
 
         public function register() {
@@ -27,12 +27,17 @@
                 // Validate email
                 if(empty($data['email'])) {
                     $data['email_err'] = 'Please enter email';
+                } else {
+                    // Check email
+                    if($this->userModel->findUserByEmail($data['email'])){
+                        $data['email_err'] = 'Email is already registered';
+                    }
                 }
 
                 // Validate name
                 if(empty($data['name'])) {
                     $data['name_err'] = 'Please enter name';
-                }
+                } 
 
                 // Validate password
                 if(empty($data['password'])) {
